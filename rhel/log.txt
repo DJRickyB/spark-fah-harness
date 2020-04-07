@@ -1,0 +1,55 @@
+*********************** Log Started 2020-04-06T13:58:57Z ***********************
+13:58:57:************************* Folding@home Client *************************
+13:58:57:    Website: http://folding.stanford.edu/
+13:58:57:  Copyright: (c) 2009-2014 Stanford University
+13:58:57:     Author: Joseph Coffland <joseph@cauldrondevelopment.com>
+13:58:57:       Args: 
+13:58:57:     Config: <none>
+13:58:57:******************************** Build ********************************
+13:58:57:    Version: 7.4.4
+13:58:57:       Date: Mar 4 2014
+13:58:57:       Time: 12:01:17
+13:58:57:    SVN Rev: 4130
+13:58:57:     Branch: fah/trunk/client
+13:58:57:   Compiler: GNU 4.1.2 20080704 (Red Hat 4.1.2-46)
+13:58:57:    Options: -std=gnu++98 -O3 -funroll-loops -mfpmath=sse -ffast-math
+13:58:57:             -fno-unsafe-math-optimizations -msse2
+13:58:57:   Platform: linux2 2.6.18-164.11.1.el5
+13:58:57:       Bits: 64
+13:58:57:       Mode: Release
+13:58:57:******************************* System ********************************
+13:58:57:        CPU: Intel(R) Xeon(R) CPU E5-2630 v3 @ 2.40GHz
+13:58:57:     CPU ID: GenuineIntel Family 6 Model 37 Stepping 1
+13:58:57:       CPUs: 4
+13:58:57:     Memory: 7.64GiB
+13:58:57:Free Memory: 3.46GiB
+13:58:57:    Threads: POSIX_THREADS
+13:58:57: OS Version: 3.10
+13:58:57:Has Battery: false
+13:58:57: On Battery: false
+13:58:57: UTC Offset: -4
+13:58:57:        PID: 14315
+13:58:57:        CWD: /home/rick.boyd
+13:58:57:         OS: Linux 3.10.0-957.1.3.el7.x86_64 x86_64
+13:58:57:    OS Arch: AMD64
+13:58:57:       GPUs: 0
+13:58:57:       CUDA: Not detected
+13:58:57:***********************************************************************
+13:58:57:<config>
+13:58:57:  <!-- Folding Slots -->
+13:58:57:</config>
+13:58:57:Connecting to assign-GPU.stanford.edu:80
+13:58:57:Updated GPUs.txt
+13:58:57:Read GPUs.txt
+13:58:57:Trying to access database...
+13:58:57:Successfully acquired database lock
+13:58:57:Enabled folding slot 00: PAUSED cpu:3 (not configured)
+13:59:14:Caught signal SIGINT(2) on PID 14315
+13:59:14:Exiting, please wait. . .
+13:59:15:Saving configuration to config.xml
+13:59:15:<config>
+13:59:15:  <!-- Folding Slots -->
+13:59:15:  <slot id='0' type='CPU'/>
+13:59:15:</config>
+13:59:15:Set client configured
+13:59:15:Clean exit
