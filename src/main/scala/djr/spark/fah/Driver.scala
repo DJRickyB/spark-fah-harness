@@ -11,11 +11,16 @@ object Driver {
   def main(args: Array[String]): Unit = {
     val log = LoggerFactory.getLogger(Driver.getClass)
     val configs = new PropertiesConfiguration("app.properties")
+    val cpus = configs.getString("fah.cpus")
     val sparkConfig = new SparkConf()
+    sparkConfig.setAppName(configs.getString("spark.appName"))
     sparkConfig.setMaster(configs.getString("spark.master"))
+    sparkConfig.set("spark.task.cpus", cpus)
+    sparkConfig.set("spark.executor.cores", cpus)
+    val fahArgs = parseFAHArgs(cpus)
+
     val sc = SparkContext.getOrCreate(sparkConfig)
 
-    val fahArgs = parseFAHArgs()
     // mock a large input to get it to run forever
     // TODO finalize this design
     val mockRDD = sc.parallelize(1.to(100000)).repartition(100000)
@@ -27,10 +32,17 @@ object Driver {
     }).reduce((_, _) => 1)
   }
 
-  def parseFAHArgs(): String = {
+  def parseFAHArgs(cpus: String): String = {
    Source.fromFile("fah.properties")
       .getLines()
+     // ignore comments
       .filterNot(_.startsWith("#"))
-      .mkString(" ")
+     // ignore extra CPUs param
+      .filterNot(_.startsWith("--cpus"))
+     // ignore extra User param
+      .filterNot(_.startsWith("--user"))
+      .mkString(" ") ++
+    s" --cpus=${cpus}" ++
+    " --user=SparkFAH"
   }
 }
