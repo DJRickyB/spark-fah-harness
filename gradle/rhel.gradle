@@ -1,0 +1,79 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-docker-plugin:6.4.0'
+    }
+}
+
+apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+
+import com.bmuschko.gradle.docker.tasks.image.*
+import com.bmuschko.gradle.docker.tasks.container.*
+
+String container = 'fah-bin'
+String context = "${projectDir.name}/rhel"
+
+task createImage(type: DockerBuildImage) {
+    inputDir = file('rhel')
+}
+
+task createContainer(type: DockerCreateContainer) {
+    dependsOn createImage
+    targetImageId createImage.getImageId()
+    containerName = container
+}
+
+task removeContainer(type: DockerRemoveContainer) {
+    targetContainerId container
+}
+
+task stopContainer(type: DockerStopContainer) {
+    targetContainerId container
+    finalizedBy removeContainer
+}
+
+task startContainer(type: DockerStartContainer) {
+    finalizedBy removeContainer
+    dependsOn createContainer
+    targetContainerId container
+}
+
+task generateRHELBin(type: DockerExecContainer) {
+    dependsOn startContainer
+    targetContainerId container
+    withCommand './createBin.sh'
+    finalizedBy removeContainer
+}
+
+task debugctr() {
+    dependsOn generateRHELBin
+    doLast {sleep 9999999999999999}
+    finalizedBy removeContainer
+}
+
+task getRHELBin(type: DockerCopyFileFromContainer) {
+    dependsOn generateRHELBin
+    targetContainerId generateRHELBin.getContainerId()
+    
+    def out = "${rootProject.buildDir}/FAH.tar"
+    
+    remotePath = "/home/fah"
+    hostPath = out
+    finalizedBy removeContainer
+    compressed = true
+    outputs.files(out)
+}
+
+task createRHELZip(type: Zip) {
+    from tasks.shadowJar
+    from tasks.getRHELBin
+    from 'scripts'
+
+    from('config') {
+        into 'config'
+    }
+    classifier = 'rhel'
+    archiveName = "${project.name}-${project.version}-${classifier}.zip"
+}
