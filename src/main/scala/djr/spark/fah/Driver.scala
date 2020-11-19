@@ -17,6 +17,7 @@ object Driver {
     sparkConfig.setMaster(configs.getString("spark.master"))
     sparkConfig.set("spark.task.cpus", cpus)
     sparkConfig.set("spark.executor.cores", cpus)
+    sparkConfig.set("spark.yarn.queue", configs.getString("spark.yarn.queue"))
     val fahArgs = parseFAHArgs(cpus)
 
     val sc = SparkContext.getOrCreate(sparkConfig)
